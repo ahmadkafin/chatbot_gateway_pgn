@@ -1,3 +1,4 @@
+import 'dotenv/config'
 import { Server } from 'socket.io';
 
 /**
@@ -7,7 +8,7 @@ import { Server } from 'socket.io';
 let io;
 
 export const initSocket = (server) => {
-    io = new Server(server, { cors: { origin: "*" } });
+    io = new Server(server, { path: process.env.APP_PATH, cors: { origin: "*" } });
     return io;
 }
 
