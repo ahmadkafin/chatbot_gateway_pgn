@@ -12,7 +12,7 @@ const pythonEngineUrl = process.env.PYTHON_ENGINE_URL
 class AiEngine {
     async ask(q) {
         try {
-            const response = await axios.post(`${pythonEngineUrl}/ask`, {
+            const response = await axios.post(`${pythonEngineUrl}/api/chat/ask`, {
                 question: q
             });
             return response;

@@ -7,6 +7,8 @@ export default (io) => {
         socket.on("send_message", async (data) => {
             try {
                 const { message } = data;
+                // console.log(`question is ${data}`)
+                console.log("Data yang diterima backend:", data);
                 await chatServices.chatProcess(socket.id, message);
 
             } catch (error) {

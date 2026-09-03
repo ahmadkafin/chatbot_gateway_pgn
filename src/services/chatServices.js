@@ -7,7 +7,8 @@ class ChatServices {
         try {
             updateStatus(socketId, "Sedang mencari data");
             const askQuestion = await aiEngine.ask(q);
-            receiveMessage(socketId, askQuestion);
+            // console.log(`answer is ${JSON.stringify(askQuestion.data)}`);
+            receiveMessage(socketId, askQuestion.data);
         } catch (e) {
             console.error(`Error di ChatServices ${e.message}`);
             throw e;
