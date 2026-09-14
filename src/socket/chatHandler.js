@@ -27,7 +27,7 @@ export default (io) => {
                 console.log("Data (stream) yang diterima backend:", data);
                 await chatServices.chatProcessStream(socket.id, question);
             } catch (error) {
-                console.error("Socket Error:", error.message);
+                console.error("Socket Error:", error); // Menampilkan pesan dan stack trace lengkap (setara dengan traceback.print_exc() di Python)
                 socket.emit("ai_stream", {
                     type: 'error',
                     message: "Maaf, saya gagal mengakses data saat ini."
