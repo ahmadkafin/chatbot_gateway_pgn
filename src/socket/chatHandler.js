@@ -4,6 +4,7 @@ import { receiveMessage } from "./emit/reieve_message.emit.js";
 export default (io) => {
     io.on("connection", (socket) => {
         console.log("⚡ User connected:", socket.id);
+
         socket.on("send_message", async (data) => {
             try {
                 const { message } = data;
@@ -16,6 +17,20 @@ export default (io) => {
                 socket.emit("receive_message", {
                     answer: "Maaf, saya gagal mengakses data saat ini.",
                     error: true
+                });
+            }
+        });
+
+        socket.on("user_ask", async (data) => {
+            try {
+                const { question } = data;
+                console.log("Data (stream) yang diterima backend:", data);
+                await chatServices.chatProcessStream(socket.id, question);
+            } catch (error) {
+                console.error("Socket Error:", error.message);
+                socket.emit("ai_stream", {
+                    type: 'error',
+                    message: "Maaf, saya gagal mengakses data saat ini."
                 });
             }
         });
