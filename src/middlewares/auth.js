@@ -2,7 +2,6 @@ import redisClient from '../config/redis.js';
 
 const SESSION_COOKIE_NAME = process.env.SESSION_COOKIE_NAME || 'digio_sessionID';
 const SESSION_NAME = process.env.SESSION_NAME || 'digio:sessions';
-const SESSION_TYPE = process.env.SESSION_TYPE || 'string'; // Tipe data default di Redis
 
 function parseCookieHeaderFor(cookieHeader = '', name) {
     if (!cookieHeader) return undefined;
@@ -34,16 +33,21 @@ export default (io) => {
             const sessionKey = `${SESSION_NAME}:${sessionId}`;
             console.log("checking:", sessionKey);
 
-            const exists = await redisClient.exists(sessionKey);
-            if (!exists) {
+            // Gunakan redisClient.type untuk mengetahui tipe data aslinya di Redis ('string', 'hash', dll)
+            // Ini lebih aman daripada menebak dari env SESSION_TYPE
+            const type = await redisClient.type(sessionKey);
+
+            if (type === 'none') {
                 return next(new Error("Authentication error: Session expired or invalid"));
             }
 
             let session = null;
-            if (SESSION_TYPE === 'string') {
+            if (type === 'string') {
                 session = await redisClient.get(sessionKey);
-            } else if (SESSION_TYPE === 'hash') {
+            } else if (type === 'hash') {
                 session = await redisClient.hGetAll(sessionKey);
+            } else {
+                console.error(`Tipe data session di redis tidak dikenali: ${type}`);
             }
 
             if (session) {
