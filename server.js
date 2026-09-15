@@ -3,6 +3,7 @@ import { createServer } from 'http';
 import { Server } from 'socket.io';
 import chatHandler from './src/socket/chatHandler.js';
 import { initSocket } from './src/socket/initSocket.js';
+import auth from './src/middlewares/auth.js';
 
 const app = express();
 const httpServer = createServer(app);
@@ -17,6 +18,7 @@ app.get('/', (req, res) => {
 });
 
 const io = initSocket(httpServer);
+auth(io);
 chatHandler(io);
 
 httpServer.listen(PORT, '0.0.0.0', () => {
