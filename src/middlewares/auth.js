@@ -15,6 +15,15 @@ function parseCookieHeaderFor(cookieHeader = '', name) {
 export default (io) => {
     io.use(async (socket, next) => {
         try {
+            // TODO: SEMENTARA (Hapus/comment blok ini nanti jika sudah selesai testing)
+            // Bypass autentikasi jika koneksi berasal dari localhost:5173
+            const origin = socket.handshake.headers.origin;
+            if (origin && origin.includes('http://localhost:5173')) {
+                console.warn("[!] Auth Middleware: Mem-bypass pengecekan untuk localhost:5173");
+                socket.session = { id: 'dummy_local_session', bypassed: true };
+                return next();
+            }
+
             const cookieHeader = socket.request.headers.cookie;
             const sessionId = parseCookieHeaderFor(cookieHeader, SESSION_COOKIE_NAME);
 
