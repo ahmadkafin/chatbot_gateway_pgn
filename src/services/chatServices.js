@@ -16,11 +16,11 @@ class ChatServices {
         }
     }
 
-    async chatProcessStream(socketId, q) {
+    async chatProcessStream(socketId, q, name) {
         try {
             updateStatus(socketId, "Sedang menyiapkan jawaban");
             const io = getIO();
-            await aiEngine.askStream(q, (eventData) => {
+            await aiEngine.askStream(q, name, (eventData) => {
                 // eventData might have { type: 'tool_start' | 'token' | 'done', ... }
                 io.to(socketId).emit('ai_stream', eventData);
             });

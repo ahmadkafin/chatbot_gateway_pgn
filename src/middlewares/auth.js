@@ -56,6 +56,7 @@ export default (io) => {
                         typeof session === 'string'
                             ? JSON.parse(session)
                             : session;
+                    console.log(socket.session);
                 } catch {
                     socket.sessionRaw = session;
                 }

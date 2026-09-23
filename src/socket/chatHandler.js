@@ -23,11 +23,12 @@ export default (io) => {
 
         socket.on("user_ask", async (data) => {
             try {
-                const { question } = data;
+                const { question, username } = data;
                 console.log("Data (stream) yang diterima backend:", data);
-                await chatServices.chatProcessStream(socket.id, question);
+                const finalName = socket.session?.usersNames || username || 'User';
+                await chatServices.chatProcessStream(socket.id, question, finalName);
             } catch (error) {
-                console.error("Socket Error:", error); // Menampilkan pesan dan stack trace lengkap (setara dengan traceback.print_exc() di Python)
+                console.error("Socket Error:", error);
                 socket.emit("ai_stream", {
                     type: 'error',
                     message: "Maaf, saya gagal mengakses data saat ini."
