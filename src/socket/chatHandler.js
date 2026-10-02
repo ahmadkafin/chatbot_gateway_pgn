@@ -26,7 +26,8 @@ export default (io) => {
                 const { question, username } = data;
                 console.log("Data (stream) yang diterima backend:", data);
                 const finalName = socket.session?.usersNames || username || 'User';
-                await chatServices.chatProcessStream(socket.id, question, finalName);
+                const sessionId = socket.session?.session_id;
+                await chatServices.chatProcessStream(socket.id, question, finalName, sessionId);
             } catch (error) {
                 console.error("Socket Error:", error);
                 socket.emit("ai_stream", {

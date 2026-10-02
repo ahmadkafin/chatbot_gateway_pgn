@@ -22,12 +22,13 @@ class AiEngine {
         }
     }
 
-    async askStream(q, name, onData) {
+    async askStream(q, name, sessionId, onData) {
         try {
+            console.log(`Session ID is ${sessionId}`)
             const response = await fetch(`${pythonEngineUrl}/api/chat/stream`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question: q, name: name })
+                body: JSON.stringify({ question: q, name: name, session_id: sessionId })
             });
 
             if (!response.body) throw new Error("No response body");
