@@ -12,7 +12,8 @@
     "pm2:stop": "pm2 stop ecosystem.config.cjs",
     "pm2:restart": "pm2 restart ecosystem.config.cjs",
     "pm2:logs": "pm2 logs chatbot_ulfa",
-    "pm2:status": "pm2 status chatbot_ulfa"
+    "pm2:status": "pm2 status chatbot_ulfa",
+    "pm2:reload:prod": "pm2 reload ecosystem.config.js --env production"
   },
   "author": "ahmadkafin",
   "license": "ISC",
